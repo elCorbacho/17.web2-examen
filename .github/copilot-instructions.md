@@ -55,7 +55,7 @@ La estructura sigue las convenciones estándar de Spring Boot:
 - **UPPER_SNAKE_CASE:** Constantes (`MAX_RETRY_ATTEMPTS`, `DEFAULT_PAGE_SIZE`)
 
 ### Comentarios
-Usar comentarios básicos en español para documentar lógica compleja o decisiones de diseño.
+Usar comentarios básicos en español para documentar lógica compleja
 
 ## Code Conventions
 
@@ -113,7 +113,7 @@ private LocalDateTime createdAt;
 private LocalDateTime updatedAt;
 
 @Column(name = "is_active")
-private Boolean active = true;  // Soft delete pattern
+private Boolean active = true;
 ```
 
 Preferir soft delete (flag `active`) sobre borrado físico para mantener trazabilidad.

@@ -24,8 +24,8 @@ public class Album {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "anio", nullable = false)
-    private Integer anio;
+    @Column(name = "year", nullable = false)
+    private Integer year;
 
     @Column(name = "descripcion", length = 500)
     private String descripcion;
