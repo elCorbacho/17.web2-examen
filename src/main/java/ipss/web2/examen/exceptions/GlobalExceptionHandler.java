@@ -96,10 +96,11 @@ public class GlobalExceptionHandler {
             Exception ex, WebRequest request) {
         
         log.error("Error interno del servidor", ex);
+        ex.printStackTrace();
         
         ApiResponseDTO<Object> response = ApiResponseDTO.builder()
             .success(false)
-            .message("Error interno del servidor. Por favor, intente más tarde")
+            .message("Error interno del servidor: " + ex.getMessage())
             .errorCode("INTERNAL_SERVER_ERROR")
             .timestamp(LocalDateTime.now())
             .build();
