@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Component
@@ -130,7 +130,7 @@ public class DataInitializer implements CommandLineRunner {
             Lamina lamina = new Lamina();
             lamina.setNombre(laminaData[0]);
             lamina.setImagen(laminaData[1]);
-            lamina.setFechaLanzamiento(LocalDateTime.of(año, mes, Math.min(dia, 28), 12, 0, 0));
+            lamina.setFechaLanzamiento(LocalDate.of(año, mes, Math.min(dia, 28)));
             lamina.setTipoLamina(laminaData[2]);
             lamina.setAlbum(album);
             lamina.setActive(true);

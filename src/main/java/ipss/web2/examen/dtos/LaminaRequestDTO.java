@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class LaminaRequestDTO {
     private String imagen;
     
     @NotNull(message = "La fecha de lanzamiento es obligatoria")
-    private LocalDateTime fechaLanzamiento;
+    private LocalDate fechaLanzamiento;
     
     @NotBlank(message = "El tipo de lámina es obligatorio")
     private String tipoLamina;

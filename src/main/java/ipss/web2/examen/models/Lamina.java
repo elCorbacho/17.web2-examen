@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,7 +29,7 @@ public class Lamina {
     private String imagen;
 
     @Column(name = "fecha_lanzamiento", nullable = false)
-    private LocalDateTime fechaLanzamiento;
+    private LocalDate fechaLanzamiento;
 
     @Column(name = "tipo_lamina", nullable = false)
     private String tipoLamina;
