@@ -2,6 +2,7 @@ package ipss.web2.examen.controllers.api;
 
 import ipss.web2.examen.dtos.LaminaRequestDTO;
 import ipss.web2.examen.dtos.LaminaResponseDTO;
+import ipss.web2.examen.repository.AlbumRepository;
 import ipss.web2.examen.models.Album;
 import ipss.web2.examen.services.LaminaService;
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ import java.util.List;
 public class LaminaController {
     
     private final LaminaService laminaService;
+    private final AlbumRepository albumRepository;
     
     /**
      * POST /api/laminas - Crear una nueva lámina
@@ -31,9 +33,9 @@ public class LaminaController {
      */
     @PostMapping
     public ResponseEntity<LaminaResponseDTO> crearLamina(@Valid @RequestBody LaminaRequestDTO requestDTO) {
-        // Simular búsqueda de album (en producción, usar AlbumRepository)
-        Album album = new Album();
-        album.setId(requestDTO.getAlbumId());
+        // Obtener el album real de la BD
+        Album album = albumRepository.findById(requestDTO.getAlbumId())
+                .orElseThrow(() -> new RuntimeException("Album no encontrado con ID: " + requestDTO.getAlbumId()));
         
         LaminaResponseDTO response = laminaService.crearLamina(requestDTO, album);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -85,9 +87,9 @@ public class LaminaController {
     public ResponseEntity<LaminaResponseDTO> actualizarLamina(
             @PathVariable Long id,
             @Valid @RequestBody LaminaRequestDTO requestDTO) {
-        // Simular búsqueda de album (en producción, usar AlbumRepository)
-        Album album = new Album();
-        album.setId(requestDTO.getAlbumId());
+        // Obtener el album real de la BD
+        Album album = albumRepository.findById(requestDTO.getAlbumId())
+                .orElseThrow(() -> new RuntimeException("Album no encontrado con ID: " + requestDTO.getAlbumId()));
         
         LaminaResponseDTO response = laminaService.actualizarLamina(id, requestDTO, album);
         return ResponseEntity.ok(response);

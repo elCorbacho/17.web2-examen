@@ -1,5 +1,6 @@
 package ipss.web2.examen.mappers;
 
+import ipss.web2.examen.dtos.AlbumBasicResponseDTO;
 import ipss.web2.examen.dtos.LaminaRequestDTO;
 import ipss.web2.examen.dtos.LaminaResponseDTO;
 import ipss.web2.examen.models.Album;
@@ -20,10 +21,19 @@ public class LaminaMapper {
         dto.setImagen(lamina.getImagen());
         dto.setFechaLanzamiento(lamina.getFechaLanzamiento());
         dto.setTipoLamina(lamina.getTipoLamina());
-        dto.setAlbumId(lamina.getAlbum().getId());
         dto.setCreatedAt(lamina.getCreatedAt());
         dto.setUpdatedAt(lamina.getUpdatedAt());
         dto.setActive(lamina.getActive());
+        
+        // Mapear el album de forma básica
+        if (lamina.getAlbum() != null) {
+            AlbumBasicResponseDTO albumBasic = new AlbumBasicResponseDTO(
+                    lamina.getAlbum().getId(),
+                    lamina.getAlbum().getNombre(),
+                    lamina.getAlbum().getYear()
+            );
+            dto.setAlbum(albumBasic);
+        }
         
         return dto;
     }

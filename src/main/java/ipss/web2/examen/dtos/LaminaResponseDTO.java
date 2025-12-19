@@ -22,11 +22,12 @@ public class LaminaResponseDTO {
     
     private String tipoLamina;
     
-    private Long albumId;
-    
     private LocalDateTime createdAt;
     
     private LocalDateTime updatedAt;
     
     private Boolean active;
+    
+    // Referencia al album (básico)
+    private AlbumBasicResponseDTO album;
 }
