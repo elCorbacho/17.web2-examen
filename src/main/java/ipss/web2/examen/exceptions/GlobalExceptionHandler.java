@@ -21,6 +21,7 @@ import java.util.Map;
  * Manejador global de excepciones para la API REST
  * Centraliza el tratamiento de errores y proporciona respuestas consistentes
  */
+@SuppressWarnings("null")
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {

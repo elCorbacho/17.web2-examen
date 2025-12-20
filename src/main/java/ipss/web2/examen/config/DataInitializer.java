@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+@SuppressWarnings("null")
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {

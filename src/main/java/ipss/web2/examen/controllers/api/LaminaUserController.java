@@ -28,6 +28,7 @@ import java.util.List;
  * - INFORMA si está o NO en el catálogo
  * - Retorna todas las copias de la lámina (incluyendo la nueva)
  */
+@SuppressWarnings("null")
 @RestController
 @RequestMapping("/api/laminas")
 @RequiredArgsConstructor
