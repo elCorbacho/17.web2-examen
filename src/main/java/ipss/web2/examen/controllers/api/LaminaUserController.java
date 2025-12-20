@@ -6,8 +6,6 @@ import ipss.web2.examen.dtos.LaminaCargueMasivoRequestDTO;
 import ipss.web2.examen.dtos.LaminaCargueMasivoResponseDTO;
 import ipss.web2.examen.dtos.LaminaRequestDTO;
 import ipss.web2.examen.dtos.LaminaResponseDTO;
-import ipss.web2.examen.models.Album;
-import ipss.web2.examen.repository.AlbumRepository;
 import ipss.web2.examen.services.LaminaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +33,6 @@ import java.util.List;
 public class LaminaUserController {
     
     private final LaminaService laminaService;
-    private final AlbumRepository albumRepository;
     
     /**
      * POST /api/laminas - Agregar nueva lámina a un álbum
@@ -61,10 +58,7 @@ public class LaminaUserController {
             throw new RuntimeException("El album_id es obligatorio en POST individual /api/laminas");
         }
         
-        Album album = albumRepository.findById(laminaDTO.getAlbumId())
-                .orElseThrow(() -> new RuntimeException("Álbum no encontrado con ID: " + laminaDTO.getAlbumId()));
-        
-        LaminaCargaResponseDTO response = laminaService.agregarLamina(album.getId(), laminaDTO, album);
+        LaminaCargaResponseDTO response = laminaService.agregarLamina(laminaDTO.getAlbumId(), laminaDTO);
         
         String mensaje = response.esRepetida() 
             ? "Lámina agregada (repetida: " + response.cantidadRepetidas() + " copias totales)"
@@ -93,10 +87,7 @@ public class LaminaUserController {
     public ResponseEntity<ApiResponseDTO<List<LaminaCargueMasivoResponseDTO>>> agregarLaminasMasivo(
             @Valid @RequestBody LaminaCargueMasivoRequestDTO cargueMasivo) {
         
-        Album album = albumRepository.findById(cargueMasivo.albumId())
-                .orElseThrow(() -> new RuntimeException("Álbum no encontrado con ID: " + cargueMasivo.albumId()));
-        
-        List<LaminaCargueMasivoResponseDTO> resultados = laminaService.agregarLaminasMasivo(cargueMasivo, album);
+        List<LaminaCargueMasivoResponseDTO> resultados = laminaService.agregarLaminasMasivo(cargueMasivo);
         
         // Contar éxitos y errores
         long exitosas = resultados.stream().filter(r -> r.laminaId() != null).count();
@@ -174,10 +165,7 @@ public class LaminaUserController {
             @PathVariable Long id,
             @Valid @RequestBody LaminaRequestDTO requestDTO) {
         
-        Album album = albumRepository.findById(requestDTO.getAlbumId())
-                .orElseThrow(() -> new RuntimeException("Álbum no encontrado con ID: " + requestDTO.getAlbumId()));
-        
-        LaminaResponseDTO response = laminaService.actualizarLamina(id, requestDTO, album);
+        LaminaResponseDTO response = laminaService.actualizarLamina(id, requestDTO);
         
         return ResponseEntity.ok(ApiResponseDTO.<LaminaResponseDTO>builder()
                 .success(true)

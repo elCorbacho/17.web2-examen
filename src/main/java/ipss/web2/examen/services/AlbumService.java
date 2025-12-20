@@ -5,7 +5,7 @@ import ipss.web2.examen.dtos.AlbumResponseDTO;
 import ipss.web2.examen.exceptions.ResourceNotFoundException;
 import ipss.web2.examen.mappers.AlbumMapper;
 import ipss.web2.examen.models.Album;
-import ipss.web2.examen.repository.AlbumRepository;
+import ipss.web2.examen.repositories.AlbumRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

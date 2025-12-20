@@ -13,8 +13,9 @@ import ipss.web2.examen.mappers.LaminaMapper;
 import ipss.web2.examen.models.Album;
 import ipss.web2.examen.models.Lamina;
 import ipss.web2.examen.models.LaminaCatalogo;
+import ipss.web2.examen.repositories.AlbumRepository;
 import ipss.web2.examen.repositories.LaminaCatalogoRepository;
-import ipss.web2.examen.repository.LaminaRepository;
+import ipss.web2.examen.repositories.LaminaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +35,17 @@ public class LaminaService {
     
     private final LaminaRepository laminaRepository;
     private final LaminaCatalogoRepository laminaCatalogoRepository;
+    private final AlbumRepository albumRepository;
     private final LaminaMapper laminaMapper;
     
     /**
      * Crear catálogo de láminas para un álbum
      */
-    public List<LaminaCatalogoResponseDTO> crearCatalogo(Long albumId, List<LaminaCatalogoRequestDTO> laminasCatalogo, Album album) {
+    public List<LaminaCatalogoResponseDTO> crearCatalogo(Long albumId, List<LaminaCatalogoRequestDTO> laminasCatalogo) {
+        // Buscar el álbum
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new ResourceNotFoundException("Álbum", "ID", albumId));
+        
         // Validar que no exista catálogo previo
         long existentes = laminaCatalogoRepository.countByAlbumAndActiveTrue(album);
         if (existentes > 0) {
@@ -59,7 +65,11 @@ public class LaminaService {
      * Agregar una lámina al álbum con validación contra catálogo
      * OBLIGATORIO: La lámina DEBE estar en el catálogo
      */
-    public LaminaCargaResponseDTO agregarLamina(Long albumId, LaminaRequestDTO laminaDTO, Album album) {
+    public LaminaCargaResponseDTO agregarLamina(Long albumId, LaminaRequestDTO laminaDTO) {
+        // Buscar el álbum
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new ResourceNotFoundException("Álbum", "ID", albumId));
+        
         // Validar que el catálogo exista
         List<LaminaCatalogo> catalogo = laminaCatalogoRepository.findByAlbumAndActiveTrue(album);
         if (catalogo.isEmpty()) {
@@ -99,7 +109,11 @@ public class LaminaService {
      * Obtener estado: láminas poseídas, faltantes y repetidas
      */
     @Transactional(readOnly = true)
-    public LaminasEstadoDTO obtenerEstado(Long albumId, Album album) {
+    public LaminasEstadoDTO obtenerEstado(Long albumId) {
+        // Buscar el álbum
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new ResourceNotFoundException("Álbum", "ID", albumId));
+        
         // Obtener catálogo
         List<LaminaCatalogo> catalogoCompleto = laminaCatalogoRepository.findByAlbumAndActiveTrue(album);
         
@@ -144,7 +158,11 @@ public class LaminaService {
     /**
      * Obtener catálogo de láminas disponibles en un álbum
      */
-    public List<LaminaCatalogoResponseDTO> obtenerCatalogo(Album album) {
+    public List<LaminaCatalogoResponseDTO> obtenerCatalogo(Long albumId) {
+        // Buscar el álbum
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new ResourceNotFoundException("Álbum", "ID", albumId));
+        
         List<LaminaCatalogo> catalogo = laminaCatalogoRepository.findByAlbumAndActiveTrue(album);
         return catalogo.stream()
             .map(laminaMapper::toCatalogoResponseDTO)
@@ -195,9 +213,13 @@ public class LaminaService {
     /**
      * Actualizar una lámina
      */
-    public LaminaResponseDTO actualizarLamina(Long id, LaminaRequestDTO requestDTO, Album album) {
+    public LaminaResponseDTO actualizarLamina(Long id, LaminaRequestDTO requestDTO) {
         Lamina lamina = laminaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lámina", "ID", id));
+        
+        // Buscar el álbum
+        Album album = albumRepository.findById(requestDTO.getAlbumId())
+                .orElseThrow(() -> new ResourceNotFoundException("Álbum", "ID", requestDTO.getAlbumId()));
         
         laminaMapper.updateEntity(requestDTO, lamina, album);
         Lamina laminaActualizada = laminaRepository.save(lamina);
@@ -219,70 +241,103 @@ public class LaminaService {
      * Agregar múltiples láminas en una sola solicitud (carga masiva)
      */
     @Transactional
-    public List<LaminaCargueMasivoResponseDTO> agregarLaminasMasivo(LaminaCargueMasivoRequestDTO cargueMasivo, Album album) {
+    public List<LaminaCargueMasivoResponseDTO> agregarLaminasMasivo(LaminaCargueMasivoRequestDTO cargueMasivo) {
+        // Buscar el álbum
+        Album album = albumRepository.findById(cargueMasivo.albumId())
+                .orElseThrow(() -> new ResourceNotFoundException("Álbum", "ID", cargueMasivo.albumId()));
+        
         // Validar que existe catálogo
-        List<LaminaCatalogo> catalogo = laminaCatalogoRepository.findByAlbumAndActiveTrue(album);
-        if (catalogo.isEmpty()) {
-            throw new RuntimeException("Debe crear un catálogo de láminas primero");
-        }
+        List<LaminaCatalogo> catalogo = validarExisteCatalogo(album);
         
         List<LaminaCargueMasivoResponseDTO> resultados = new ArrayList<>();
         
         for (LaminaRequestDTO laminaDTO : cargueMasivo.laminas()) {
-            try {
-                // Buscar láminas existentes con el mismo nombre
-                List<Lamina> laminasExistentes = laminaRepository
-                    .findByAlbumAndNombreAndActiveTrue(album, laminaDTO.getNombre());
-                
-                // Verificar si está en catálogo
-                boolean estaEnCatalogo = catalogo.stream()
-                    .anyMatch(cat -> cat.getNombre().equalsIgnoreCase(laminaDTO.getNombre()));
-                
-                if (!estaEnCatalogo) {
-                    resultados.add(new LaminaCargueMasivoResponseDTO(
-                        null,
-                        laminaDTO.getNombre(),
-                        false,
-                        0,
-                        false,
-                        "❌ NO AGREGADA: No está en el catálogo"
-                    ));
-                    continue;
-                }
-                
-                boolean esRepetida = !laminasExistentes.isEmpty();
-                
-                // Crear y guardar la lámina
-                Lamina lamina = laminaMapper.toEntity(laminaDTO, album);
-                Lamina laminaGuardada = laminaRepository.save(lamina);
-                
-                int cantidadTotal = laminasExistentes.size() + 1;
-                
-                String estado = esRepetida 
-                    ? "✓ AGREGADA (Repetida: " + cantidadTotal + " copias)"
-                    : "✓ AGREGADA (Nueva)";
-                
-                resultados.add(new LaminaCargueMasivoResponseDTO(
-                    laminaGuardada.getId(),
-                    laminaGuardada.getNombre(),
-                    esRepetida,
-                    cantidadTotal,
-                    true,
-                    estado
-                ));
-                
-            } catch (Exception e) {
-                resultados.add(new LaminaCargueMasivoResponseDTO(
-                    null,
-                    laminaDTO.getNombre(),
-                    false,
-                    0,
-                    false,
-                    "❌ ERROR: " + e.getMessage()
-                ));
-            }
+            LaminaCargueMasivoResponseDTO resultado = procesarLaminaIndividual(laminaDTO, album, catalogo);
+            resultados.add(resultado);
         }
         
         return resultados;
+    }
+    
+    /**
+     * Validar que el álbum tiene catálogo definido
+     */
+    private List<LaminaCatalogo> validarExisteCatalogo(Album album) {
+        List<LaminaCatalogo> catalogo = laminaCatalogoRepository.findByAlbumAndActiveTrue(album);
+        if (catalogo.isEmpty()) {
+            throw new RuntimeException("Debe crear un catálogo de láminas primero");
+        }
+        return catalogo;
+    }
+    
+    /**
+     * Procesar una lámina individual en carga masiva
+     */
+    private LaminaCargueMasivoResponseDTO procesarLaminaIndividual(
+            LaminaRequestDTO laminaDTO, 
+            Album album, 
+            List<LaminaCatalogo> catalogo) {
+        try {
+            // Verificar si está en catálogo
+            boolean estaEnCatalogo = catalogo.stream()
+                .anyMatch(cat -> cat.getNombre().equalsIgnoreCase(laminaDTO.getNombre()));
+            
+            if (!estaEnCatalogo) {
+                return construirResultadoError(laminaDTO.getNombre(), 
+                    "❌ NO AGREGADA: No está en el catálogo");
+            }
+            
+            // Buscar láminas existentes con el mismo nombre
+            List<Lamina> laminasExistentes = laminaRepository
+                .findByAlbumAndNombreAndActiveTrue(album, laminaDTO.getNombre());
+            
+            boolean esRepetida = !laminasExistentes.isEmpty();
+            
+            // Crear y guardar la lámina
+            Lamina lamina = laminaMapper.toEntity(laminaDTO, album);
+            Lamina laminaGuardada = laminaRepository.save(lamina);
+            
+            int cantidadTotal = laminasExistentes.size() + 1;
+            
+            return construirResultadoExitoso(laminaGuardada, esRepetida, cantidadTotal);
+            
+        } catch (Exception e) {
+            return construirResultadoError(laminaDTO.getNombre(), "❌ ERROR: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Construir respuesta de error para carga masiva
+     */
+    private LaminaCargueMasivoResponseDTO construirResultadoError(String nombre, String mensaje) {
+        return new LaminaCargueMasivoResponseDTO(
+            null,
+            nombre,
+            false,
+            0,
+            false,
+            mensaje
+        );
+    }
+    
+    /**
+     * Construir respuesta exitosa para carga masiva
+     */
+    private LaminaCargueMasivoResponseDTO construirResultadoExitoso(
+            Lamina laminaGuardada, 
+            boolean esRepetida, 
+            int cantidadTotal) {
+        String estado = esRepetida 
+            ? "✓ AGREGADA (Repetida: " + cantidadTotal + " copias)"
+            : "✓ AGREGADA (Nueva)";
+        
+        return new LaminaCargueMasivoResponseDTO(
+            laminaGuardada.getId(),
+            laminaGuardada.getNombre(),
+            esRepetida,
+            cantidadTotal,
+            true,
+            estado
+        );
     }
 }

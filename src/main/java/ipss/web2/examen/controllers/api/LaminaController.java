@@ -38,9 +38,7 @@ public class LaminaController {
             @PathVariable Long albumId,
             @Valid @RequestBody List<LaminaCatalogoRequestDTO> catalogo) {
         
-        Album album = albumService.obtenerAlbumEntityPorId(albumId);
-        
-        List<LaminaCatalogoResponseDTO> response = laminaService.crearCatalogo(albumId, catalogo, album);
+        List<LaminaCatalogoResponseDTO> response = laminaService.crearCatalogo(albumId, catalogo);
         
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponseDTO.<List<LaminaCatalogoResponseDTO>>builder()
@@ -57,9 +55,7 @@ public class LaminaController {
      */
     @GetMapping
     public ResponseEntity<ApiResponseDTO<List<LaminaCatalogoResponseDTO>>> obtenerCatalogo(@PathVariable Long albumId) {
-        Album album = albumService.obtenerAlbumEntityPorId(albumId);
-        
-        List<LaminaCatalogoResponseDTO> catalogo = laminaService.obtenerCatalogo(album);
+        List<LaminaCatalogoResponseDTO> catalogo = laminaService.obtenerCatalogo(albumId);
         
         return ResponseEntity.ok(ApiResponseDTO.<List<LaminaCatalogoResponseDTO>>builder()
                 .success(true)
@@ -75,9 +71,7 @@ public class LaminaController {
      */
     @GetMapping("/estado")
     public ResponseEntity<ApiResponseDTO<LaminasEstadoDTO>> obtenerEstado(@PathVariable Long albumId) {
-        Album album = albumService.obtenerAlbumEntityPorId(albumId);
-        
-        LaminasEstadoDTO estado = laminaService.obtenerEstado(albumId, album);
+        LaminasEstadoDTO estado = laminaService.obtenerEstado(albumId);
         
         return ResponseEntity.ok(ApiResponseDTO.<LaminasEstadoDTO>builder()
                 .success(true)

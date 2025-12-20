@@ -1,4 +1,4 @@
-package ipss.web2.examen.repository;
+package ipss.web2.examen.repositories;
 
 import ipss.web2.examen.models.Album;
 import org.springframework.data.jpa.repository.JpaRepository;
