@@ -13,6 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class LaminaRequestDTO {
     
+    @NotNull(message = "El album_id es obligatorio")
+    private Long albumId;
+    
     @NotBlank(message = "El nombre de la lámina es obligatorio")
     private String nombre;
     
@@ -23,7 +26,4 @@ public class LaminaRequestDTO {
     
     @NotBlank(message = "El tipo de lámina es obligatorio")
     private String tipoLamina;
-    
-    @NotNull(message = "El album_id es obligatorio")
-    private Long albumId;
 }

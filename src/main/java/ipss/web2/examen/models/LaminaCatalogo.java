@@ -2,24 +2,24 @@ package ipss.web2.examen.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "album")
+@Table(name = "lamina_catalogo", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"album_id", "nombre"})
+})
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Album {
+public class LaminaCatalogo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,11 +27,14 @@ public class Album {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "year", nullable = false)
-    private Integer year;
+    @Column(name = "imagen", nullable = true)
+    private String imagen;
 
-    @Column(name = "descripcion", length = 500)
-    private String descripcion;
+    @Column(name = "fecha_lanzamiento", nullable = false)
+    private LocalDate fechaLanzamiento;
+
+    @Column(name = "tipo_lamina", nullable = false)
+    private String tipoLamina;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -41,13 +44,10 @@ public class Album {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Builder.Default
     @Column(name = "is_active")
     private Boolean active = true;
 
-    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Lamina> laminas;
-
-    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LaminaCatalogo> laminasCatalogo;
+    @ManyToOne
+    @JoinColumn(name = "album_id", nullable = false)
+    private Album album;
 }

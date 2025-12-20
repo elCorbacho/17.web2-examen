@@ -1,10 +1,13 @@
 package ipss.web2.examen.mappers;
 
 import ipss.web2.examen.dtos.AlbumBasicResponseDTO;
+import ipss.web2.examen.dtos.LaminaCatalogoRequestDTO;
+import ipss.web2.examen.dtos.LaminaCatalogoResponseDTO;
 import ipss.web2.examen.dtos.LaminaRequestDTO;
 import ipss.web2.examen.dtos.LaminaResponseDTO;
 import ipss.web2.examen.models.Album;
 import ipss.web2.examen.models.Lamina;
+import ipss.web2.examen.models.LaminaCatalogo;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -64,5 +67,38 @@ public class LaminaMapper {
         lamina.setFechaLanzamiento(dto.getFechaLanzamiento());
         lamina.setTipoLamina(dto.getTipoLamina());
         lamina.setAlbum(album);
+    }
+    
+    public LaminaCatalogo toCatalogoEntity(LaminaCatalogoRequestDTO dto, Album album) {
+        if (dto == null) {
+            return null;
+        }
+        
+        LaminaCatalogo catalogo = new LaminaCatalogo();
+        catalogo.setNombre(dto.nombre());
+        catalogo.setImagen(dto.imagen());
+        catalogo.setFechaLanzamiento(dto.fechaLanzamiento());
+        catalogo.setTipoLamina(dto.tipoLamina());
+        catalogo.setAlbum(album);
+        catalogo.setActive(true);
+        
+        return catalogo;
+    }
+    
+    public LaminaCatalogoResponseDTO toCatalogoResponseDTO(LaminaCatalogo entity) {
+        if (entity == null) {
+            return null;
+        }
+        
+        return new LaminaCatalogoResponseDTO(
+            entity.getId(),
+            entity.getNombre(),
+            entity.getImagen(),
+            entity.getFechaLanzamiento(),
+            entity.getTipoLamina(),
+            entity.getCreatedAt(),
+            entity.getUpdatedAt(),
+            entity.getActive()
+        );
     }
 }
