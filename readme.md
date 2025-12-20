@@ -376,12 +376,65 @@ El proyecto utiliza **MySQL** montado en **AWS RDS**
 
 </div>
 
-### SWAGGER UI
+### 📜 Swagger UI
+
+<div align="center">
+
 ![SWAGGER](screenshots/swagger.png)
+*Documentación interactiva con Swagger UI*
+
+</div>
 
 ---
 
+## 🧪 Colecciones de API para Testing
 
-### Colecciones de API Postman y Bruno disponibles en:
-![Postman](api-collections/18.web2.examen-postman.json)
-![Bruno](api-collections/18.web2.examen-bruno.json)
+Para facilitar las pruebas de la API, se incluyen colecciones completas para **Postman** y **Bruno** con todos los endpoints documentados y ejemplos de respuestas.
+
+### 📦 Archivos Disponibles
+
+<table>
+<thead>
+<tr>
+<th width="120">Cliente</th>
+<th width="300">Archivo</th>
+<th>Endpoints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">📮 <strong>Postman</strong></td>
+<td><a href="api-collections/18.web2.examen-postman.json">18.web2.examen-postman.json</a></td>
+<td>18 endpoints testeados</td>
+</tr>
+<tr>
+<td align="center">🐻 <strong>Bruno</strong></td>
+<td><a href="api-collections/18.web2.examen-bruno.json">18.web2.examen-bruno.json</a></td>
+<td>18 endpoints testeados</td>
+</tr>
+</tbody>
+</table>
+
+### 🚀 Cómo Usar
+
+#### Para Postman:
+1. Abre **Postman**
+2. Click en **Import** (esquina superior izquierda)
+3. Selecciona el archivo [`18.web2.examen-postman.json`](api-collections/18.web2.examen-postman.json)
+4. ¡Listo! Tendrás 18 peticiones configuradas y listas para probar
+
+#### Para Bruno:
+1. Abre **Bruno**
+2. Click en **Import Collection**
+3. Selecciona el archivo [`18.web2.examen-bruno.json`](api-collections/18.web2.examen-bruno.json)
+4. Todas las peticiones con ejemplos estarán disponibles
+
+### ✅ Contenido de las Colecciones
+
+Las colecciones incluyen:
+- ✔️ **CRUD Álbumes** - 5 endpoints (Crear, Listar, Obtener, Actualizar, Eliminar)
+- ✔️ **CRUD Láminas** - 6 endpoints (Crear, Listar, Obtener por ID/Álbum, Actualizar, Eliminar)
+- ✔️ **Catálogo** - 3 endpoints (Crear catálogo, Ver catálogo, Estado)
+- ✔️ **Carga Masiva** - 2 endpoints (Agregar múltiples láminas)
+- ✔️ **Casos de Error** - Ejemplos de validación y errores
+- ✔️ **Ejemplos de Respuesta** - Respuestas reales guardadas para referencia
