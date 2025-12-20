@@ -32,12 +32,11 @@ cd 18.web2-examen
 # Linux/Mac
 ./mvnw spring-boot:run
 ```
-
+### 4. Acceder a la Aplicación
 La aplicación estará disponible en: **http://localhost:8080**
 
 ### Base de Datos
-Por defecto utiliza **H2 en memoria** para desarrollo. La consola H2 está disponible en: http://localhost:8080/h2-console
-
+Montada con MySQL en AWS RDS. 
 ---
 
 ## 📡 Endpoints Disponibles
@@ -78,7 +77,6 @@ Por defecto utiliza **H2 en memoria** para desarrollo. La consola H2 está dispo
 | POST | `/api/laminas/masivo` | Agregar múltiples láminas en una solicitud (valida cada una individualmente) |
 
 ### 🏥 5. Monitoreo - `/actuator`
-
 Spring Boot Actuator disponible para health checks y métricas del sistema.
 
 ---
