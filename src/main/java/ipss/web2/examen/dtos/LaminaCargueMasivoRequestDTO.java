@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
+// DTO de solicitud para el cargue masivo de láminas
 public record LaminaCargueMasivoRequestDTO(
     @NotNull(message = "El ID del álbum es obligatorio")
     Long albumId,

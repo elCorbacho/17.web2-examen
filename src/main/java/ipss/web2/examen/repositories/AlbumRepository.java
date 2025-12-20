@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
+// Repositorio para la entidad Álbum
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Long> {
     List<Album> findByActiveTrue();

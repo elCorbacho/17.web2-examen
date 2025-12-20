@@ -9,11 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-/**
- * DTO genérico para envolver todas las respuestas de la API
- * Proporciona consistencia en el formato de respuestas
- * 
- * @param <T> Tipo de dato contenido en la respuesta
+/**DTO genérico para envolver todas las respuestas de la API @param <T> Tipo de dato contenido en la respuesta
  */
 @Data
 @Builder
@@ -22,33 +18,21 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponseDTO<T> {
     
-    /**
-     * Indica si la operación fue exitosa
-     */
+    // Indica si la operación fue exitosa
     private Boolean success;
     
-    /**
-     * Mensaje descriptivo de la operación
-     */
+    // Mensaje descriptivo de la operación
     private String message;
     
-    /**
-     * Datos de la respuesta (puede ser null en operaciones de eliminación)
-     */
+    //Datos de la respuesta (puede ser null en operaciones de eliminación)
     private T data;
     
-    /**
-     * Códigos de error en caso de fallo
-     */
+    //Códigos de error en caso de fallo
     private String errorCode;
     
-    /**
-     * Detalles adicionales del error
-     */
+    // Detalles adicionales del error
     private Map<String, Object> errors;
     
-    /**
-     * Timestamp de cuando se realizó la operación
-     */
+    // Marca temporal de la respuesta
     private LocalDateTime timestamp;
 }

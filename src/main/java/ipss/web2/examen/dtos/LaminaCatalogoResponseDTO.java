@@ -3,6 +3,8 @@ package ipss.web2.examen.dtos;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
+// DTO de respuesta para el catálogo de láminas
 public record LaminaCatalogoResponseDTO(
     Long id,
     String nombre,

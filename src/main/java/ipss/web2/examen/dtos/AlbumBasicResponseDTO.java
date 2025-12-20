@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO básico de Album para relaciones
- * Evita serialización circular
- */
+/// DTO de respuesta básica para Álbum
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

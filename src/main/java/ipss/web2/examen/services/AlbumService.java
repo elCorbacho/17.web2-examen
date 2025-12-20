@@ -22,18 +22,14 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumMapper albumMapper;
     
-    /**
-     * Crear un nuevo album
-     */
+    // Crear un nuevo album
     public AlbumResponseDTO crearAlbum(AlbumRequestDTO requestDTO) {
         Album album = albumMapper.toEntity(requestDTO);
         Album albumGuardado = albumRepository.save(album);
         return albumMapper.toResponseDTO(albumGuardado);
     }
     
-    /**
-     * Obtener album por ID
-     */
+    // Obtener un album por ID
     @Transactional(readOnly = true)
     public AlbumResponseDTO obtenerAlbumPorId(Long id) {
         Album album = albumRepository.findById(id)
@@ -41,9 +37,7 @@ public class AlbumService {
         return albumMapper.toResponseDTO(album);
     }
     
-    /**
-     * Obtener todos los albums activos
-     */
+    // Obtener todos los albums activos
     @Transactional(readOnly = true)
     public List<AlbumResponseDTO> obtenerTodosLosAlbums() {
         return albumRepository.findByActiveTrue()
@@ -52,9 +46,7 @@ public class AlbumService {
                 .collect(Collectors.toList());
     }
     
-    /**
-     * Actualizar un album
-     */
+    // Actualizar un album existente
     public AlbumResponseDTO actualizarAlbum(Long id, AlbumRequestDTO requestDTO) {
         Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Album", "ID", id));
@@ -64,9 +56,7 @@ public class AlbumService {
         return albumMapper.toResponseDTO(albumActualizado);
     }
     
-    /**
-     * Eliminar un album (soft delete)
-     */
+    // Eliminar (desactivar) un album
     public void eliminarAlbum(Long id) {
         Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Album", "ID", id));
@@ -75,9 +65,7 @@ public class AlbumService {
         albumRepository.save(album);
     }
     
-    /**
-     * Obtener entidad Album por ID (para uso interno de otros servicios/controllers)
-     */
+    // Obtener la entidad Album por ID (uso interno)
     @Transactional(readOnly = true)
     public Album obtenerAlbumEntityPorId(Long id) {
         return albumRepository.findById(id)

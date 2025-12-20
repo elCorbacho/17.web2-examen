@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+// Modelo de entidad para Lámina
 @Entity
 @Table(name = "lamina")
 @Data

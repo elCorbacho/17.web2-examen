@@ -1,9 +1,6 @@
 package ipss.web2.examen.exceptions;
 
-/**
- * Excepción lanzada cuando un recurso solicitado no es encontrado
- * Status HTTP: 404 NOT FOUND
- */
+// Excepción personalizada para manejar recursos no encontrados (404)
 public class ResourceNotFoundException extends RuntimeException {
     
     private String resourceName;

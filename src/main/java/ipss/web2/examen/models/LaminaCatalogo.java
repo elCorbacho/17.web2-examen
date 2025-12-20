@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
+// Modelo de entidad para Lámina de Catálogo
 @Entity
 @Table(name = "lamina_catalogo", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"album_id", "nombre"})

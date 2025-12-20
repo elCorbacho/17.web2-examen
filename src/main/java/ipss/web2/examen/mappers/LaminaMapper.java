@@ -10,6 +10,9 @@ import ipss.web2.examen.models.Lamina;
 import ipss.web2.examen.models.LaminaCatalogo;
 import org.springframework.stereotype.Component;
 
+
+// Mapper para convertir entre Lamina, LaminaRequestDTO, LaminaResponseDTO,
+// LaminaCatalogoRequestDTO, LaminaCatalogoResponseDTO
 @Component
 public class LaminaMapper {
     

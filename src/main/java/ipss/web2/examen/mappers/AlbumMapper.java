@@ -5,6 +5,9 @@ import ipss.web2.examen.dtos.AlbumResponseDTO;
 import ipss.web2.examen.models.Album;
 import org.springframework.stereotype.Component;
 
+
+// Mapper para convertir entre Album, AlbumRequestDTO y AlbumResponseDTO
+
 @Component
 public class AlbumMapper {
     

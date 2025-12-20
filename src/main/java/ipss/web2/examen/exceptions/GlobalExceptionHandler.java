@@ -17,18 +17,13 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Manejador global de excepciones para la API REST
- * Centraliza el tratamiento de errores y proporciona respuestas consistentes
- */
+// Manejador global de excepciones para la aplicación
 @SuppressWarnings("null")
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
-    /**
-     * Maneja excepciones de recurso no encontrado (404)
-     */
+    /// Maneja excepciones de recurso no encontrado (404)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleResourceNotFoundException(
             ResourceNotFoundException ex, WebRequest request) {
@@ -45,9 +40,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     
-    /**
-     * Maneja excepciones de operación inválida (400/422)
-     */
+    // Maneja excepciones de operación inválida (400/422)
     @ExceptionHandler(InvalidOperationException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleInvalidOperationException(
             InvalidOperationException ex, WebRequest request) {
@@ -64,10 +57,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
     
-    /**
-     * Maneja excepciones de validación de argumentos (400)
-     * Retorna detalle de cada campo que falló la validación
-     */
+    // Maneja errores de validación de datos (400)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, WebRequest request) {
@@ -92,9 +82,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
     
-    /**
-     * Maneja errores de conversión de tipos de parámetros (400)
-     */
+    // Maneja errores de conversión de tipos de parámetros (400)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex, WebRequest request) {
@@ -122,9 +110,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
     
-    /**
-     * Maneja violaciones de restricciones de base de datos (409)
-     */
+    // Maneja violaciones de restricciones de base de datos (409)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleDataIntegrityViolation(
             DataIntegrityViolationException ex, WebRequest request) {
@@ -146,9 +132,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
     
-    /**
-     * Maneja excepciones cuando no se encuentra el endpoint (404)
-     */
+    // Maneja excepciones de endpoint no encontrado (404)
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleNoHandlerFound(
             NoHandlerFoundException ex, WebRequest request) {
@@ -171,9 +155,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     
-    /**
-     * Maneja excepciones personalizadas de endpoint no encontrado (404)
-     */
+    // Maneja excepciones de endpoint personalizado no encontrado (404)
     @ExceptionHandler(EndpointNotFoundException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleEndpointNotFoundException(
             EndpointNotFoundException ex, WebRequest request) {
@@ -200,9 +182,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     
-    /**
-     * Maneja excepciones de runtime (RuntimeException general)
-     */
+    // Maneja excepciones de tiempo de ejecución genéricas (400/404)
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleRuntimeException(
             RuntimeException ex, WebRequest request) {
@@ -235,9 +215,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(response);
     }
     
-    /**
-     * Maneja excepciones generales no controladas (500)
-     */
+    // Maneja excepciones genéricas no capturadas (500)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponseDTO<Object>> handleGlobalException(
             Exception ex, WebRequest request) {

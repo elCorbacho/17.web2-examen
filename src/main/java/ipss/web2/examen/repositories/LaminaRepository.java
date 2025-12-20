@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
+// Repositorio para la entidad Lámina
 @Repository
 public interface LaminaRepository extends JpaRepository<Lamina, Long> {
     List<Lamina> findByAlbumId(Long albumId);

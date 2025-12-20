@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
+// DTO de respuesta para una lámina, incluyendo información del álbum asociado
 public class LaminaResponseDTO {
     
     private Long id;

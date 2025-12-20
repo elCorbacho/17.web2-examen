@@ -1,9 +1,6 @@
 package ipss.web2.examen.exceptions;
 
-/**
- * Excepción lanzada cuando se intenta acceder a un endpoint que no existe
- * Status HTTP: 404 NOT FOUND
- */
+/// Excepción personalizada para manejar endpoints no encontrados
 public class EndpointNotFoundException extends RuntimeException {
     
     private String method;

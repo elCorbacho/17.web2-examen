@@ -38,9 +38,7 @@ public class LaminaService {
     private final AlbumRepository albumRepository;
     private final LaminaMapper laminaMapper;
     
-    /**
-     * Crear catálogo de láminas para un álbum
-     */
+    // Crear catálogo de láminas para un álbum
     public List<LaminaCatalogoResponseDTO> crearCatalogo(Long albumId, List<LaminaCatalogoRequestDTO> laminasCatalogo) {
         // Buscar el álbum
         Album album = albumRepository.findById(albumId)
@@ -61,10 +59,7 @@ public class LaminaService {
             .collect(Collectors.toList());
     }
     
-    /**
-     * Agregar una lámina al álbum con validación contra catálogo
-     * OBLIGATORIO: La lámina DEBE estar en el catálogo
-     */
+    // Agregar una lámina validando catálogo y detectando repetidas
     public LaminaCargaResponseDTO agregarLamina(Long albumId, LaminaRequestDTO laminaDTO) {
         // Buscar el álbum
         Album album = albumRepository.findById(albumId)
@@ -105,9 +100,7 @@ public class LaminaService {
         );
     }
     
-    /**
-     * Obtener estado: láminas poseídas, faltantes y repetidas
-     */
+    // Obtener estado de láminas: poseídas, faltantes y repetidas
     @Transactional(readOnly = true)
     public LaminasEstadoDTO obtenerEstado(Long albumId) {
         // Buscar el álbum
@@ -155,9 +148,7 @@ public class LaminaService {
         return new LaminasEstadoDTO(laminasDTO, laminasFaltantes, laminasRepetidas, totalLaminas, laminasFaltantesTotal, laminasRepetidastotal);
     }
     
-    /**
-     * Obtener catálogo de láminas disponibles en un álbum
-     */
+    // Obtener catálogo de láminas para un álbum
     public List<LaminaCatalogoResponseDTO> obtenerCatalogo(Long albumId) {
         // Buscar el álbum
         Album album = albumRepository.findById(albumId)
@@ -169,18 +160,14 @@ public class LaminaService {
             .collect(Collectors.toList());
     }
     
-    /**
-     * Crear una nueva lámina
-     */
+    // Crear una nueva lámina
     public LaminaResponseDTO crearLamina(LaminaRequestDTO requestDTO, Album album) {
         Lamina lamina = laminaMapper.toEntity(requestDTO, album);
         Lamina laminaGuardada = laminaRepository.save(lamina);
         return laminaMapper.toResponseDTO(laminaGuardada);
     }
     
-    /**
-     * Obtener lámina por ID
-     */
+    // Obtener una lámina por ID
     @Transactional(readOnly = true)
     public LaminaResponseDTO obtenerLaminaPorId(Long id) {
         Lamina lamina = laminaRepository.findById(id)
@@ -188,9 +175,7 @@ public class LaminaService {
         return laminaMapper.toResponseDTO(lamina);
     }
     
-    /**
-     * Obtener todas las láminas activas
-     */
+    // Obtener todas las láminas activas
     @Transactional(readOnly = true)
     public List<LaminaResponseDTO> obtenerTodasLasLaminas() {
         return laminaRepository.findByActiveTrue()
@@ -199,9 +184,7 @@ public class LaminaService {
                 .collect(Collectors.toList());
     }
     
-    /**
-     * Obtener láminas por ID de album
-     */
+    // Obtener láminas por álbum
     @Transactional(readOnly = true)
     public List<LaminaResponseDTO> obtenerLaminasPorAlbum(Long albumId) {
         return laminaRepository.findByAlbumId(albumId)
@@ -210,9 +193,7 @@ public class LaminaService {
                 .collect(Collectors.toList());
     }
     
-    /**
-     * Actualizar una lámina
-     */
+    // Actualizar una lámina
     public LaminaResponseDTO actualizarLamina(Long id, LaminaRequestDTO requestDTO) {
         Lamina lamina = laminaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lámina", "ID", id));
@@ -226,9 +207,7 @@ public class LaminaService {
         return laminaMapper.toResponseDTO(laminaActualizada);
     }
     
-    /**
-     * Eliminar una lámina (soft delete)
-     */
+    // Eliminar (desactivar) una lámina
     public void eliminarLamina(Long id) {
         Lamina lamina = laminaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lámina", "ID", id));
@@ -237,9 +216,7 @@ public class LaminaService {
         laminaRepository.save(lamina);
     }
     
-    /**
-     * Agregar múltiples láminas en una sola solicitud (carga masiva)
-     */
+    // Agregar láminas en masa con validaciones
     @Transactional
     public List<LaminaCargueMasivoResponseDTO> agregarLaminasMasivo(LaminaCargueMasivoRequestDTO cargueMasivo) {
         // Buscar el álbum
@@ -259,9 +236,7 @@ public class LaminaService {
         return resultados;
     }
     
-    /**
-     * Validar que el álbum tiene catálogo definido
-     */
+    // Validar que el catálogo de láminas existe para el álbum
     private List<LaminaCatalogo> validarExisteCatalogo(Album album) {
         List<LaminaCatalogo> catalogo = laminaCatalogoRepository.findByAlbumAndActiveTrue(album);
         if (catalogo.isEmpty()) {
@@ -270,9 +245,7 @@ public class LaminaService {
         return catalogo;
     }
     
-    /**
-     * Procesar una lámina individual en carga masiva
-     */
+    // Procesar una lámina individual en la carga masiva
     private LaminaCargueMasivoResponseDTO procesarLaminaIndividual(
             LaminaRequestDTO laminaDTO, 
             Album album, 
@@ -306,9 +279,7 @@ public class LaminaService {
         }
     }
     
-    /**
-     * Construir respuesta de error para carga masiva
-     */
+    // Construir respuesta de error para carga masiva
     private LaminaCargueMasivoResponseDTO construirResultadoError(String nombre, String mensaje) {
         return new LaminaCargueMasivoResponseDTO(
             null,
@@ -320,9 +291,7 @@ public class LaminaService {
         );
     }
     
-    /**
-     * Construir respuesta exitosa para carga masiva
-     */
+    // Construir respuesta de éxito para carga masiva
     private LaminaCargueMasivoResponseDTO construirResultadoExitoso(
             Lamina laminaGuardada, 
             boolean esRepetida, 
