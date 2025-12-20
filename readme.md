@@ -38,6 +38,7 @@ La aplicación estará disponible en: **http://localhost:8080**
 ### Base de Datos
 Montada con MySQL en AWS RDS.
 
+
 ## 📡 Endpoints Disponibles
 
 ### 🎯 1. Gestión de Álbumes - `/api/albums`
