@@ -81,7 +81,7 @@ cd 18.web2-examen
 
 Una vez iniciada la aplicación, accede a:
 
-🌐 **API Base URL:** `http://localhost:8080`  
+🌐 **API Base URL:** `http://localhost:8080`
 🔍 **Actuator Health:** `http://localhost:8080/actuator/health`
 📜 **Swagger UI:** `http://localhost:8080/swagger-ui.html`
 
@@ -89,11 +89,7 @@ Una vez iniciada la aplicación, accede a:
 
 ## 💾 Base de Datos
 
-El proyecto utiliza **MySQL** montado en **AWS RDS** para producción.
-
-
-
-Consola H2: `http://localhost:8080/h2-console`
+El proyecto utiliza **MySQL** montado en **AWS RDS** 
 
 
 ## 📡 API Endpoints
@@ -309,59 +305,3 @@ Consola H2: `http://localhost:8080/h2-console`
 - ⏰ **JPA Auditing** - Auditoría automática
 
 ---
-
-## 🧪 Testing
-
-Ejecutar la suite de tests:
-
-**Windows:**
-```bash
-.\mvnw.cmd test
-```
-
-**Linux/Mac:**
-```bash
-./mvnw test
-```
-
----
-
-## 📚 Documentación Adicional
-
-Para más detalles sobre los endpoints, ejemplos de peticiones y respuestas, consulta:
-
-📄 [API_DOCUMENTATION.md](API_DOCUMENTATION.md)
-
----
-
-## 🤝 Contribución
-
-Las contribuciones son bienvenidas. Por favor:
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver archivo `LICENSE` para más detalles.
-
----
-
-## 👨‍💻 Autor
-
-**Proyecto Web 2 - Examen**
-
-Desarrollado con ❤️ usando Spring Boot
-
----
-
-<div align="center">
-
-⭐ Si te gusta este proyecto, dale una estrella en GitHub ⭐
-
-</div>
