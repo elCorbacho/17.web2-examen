@@ -13,7 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class LaminaRequestDTO {
     
-    @NotNull(message = "El album_id es obligatorio")
+    // Opcional: solo se usa en POST /api/laminas individual
+    // En carga masiva viene del nivel superior
     private Long albumId;
     
     @NotBlank(message = "El nombre de la lámina es obligatorio")

@@ -56,6 +56,10 @@ public class LaminaUserController {
     public ResponseEntity<ApiResponseDTO<LaminaCargaResponseDTO>> agregarLamina(
             @Valid @RequestBody LaminaRequestDTO laminaDTO) {
         
+        if (laminaDTO.getAlbumId() == null) {
+            throw new RuntimeException("El album_id es obligatorio en POST individual /api/laminas");
+        }
+        
         Album album = albumRepository.findById(laminaDTO.getAlbumId())
                 .orElseThrow(() -> new RuntimeException("Álbum no encontrado con ID: " + laminaDTO.getAlbumId()));
         

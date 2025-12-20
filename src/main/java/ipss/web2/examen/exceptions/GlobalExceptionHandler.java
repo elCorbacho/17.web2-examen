@@ -200,6 +200,41 @@ public class GlobalExceptionHandler {
     }
     
     /**
+     * Maneja excepciones de runtime (RuntimeException general)
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiResponseDTO<Object>> handleRuntimeException(
+            RuntimeException ex, WebRequest request) {
+        
+        log.error("RuntimeException capturada: {}", ex.getMessage(), ex);
+        
+        // Determinar si es un error de lámina no en catálogo
+        String message = ex.getMessage();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String errorCode = "RUNTIME_ERROR";
+        
+        if (message != null && message.contains("NO existe en el catálogo")) {
+            errorCode = "LAMINA_NOT_IN_CATALOG";
+            status = HttpStatus.BAD_REQUEST;
+        } else if (message != null && message.contains("no encontrado")) {
+            errorCode = "RESOURCE_NOT_FOUND";
+            status = HttpStatus.NOT_FOUND;
+        } else if (message != null && message.contains("obligatorio")) {
+            errorCode = "VALIDATION_ERROR";
+            status = HttpStatus.BAD_REQUEST;
+        }
+        
+        ApiResponseDTO<Object> response = ApiResponseDTO.builder()
+            .success(false)
+            .message(message != null ? message : "Error en tiempo de ejecución")
+            .errorCode(errorCode)
+            .timestamp(LocalDateTime.now())
+            .build();
+        
+        return ResponseEntity.status(status).body(response);
+    }
+    
+    /**
      * Maneja excepciones generales no controladas (500)
      */
     @ExceptionHandler(Exception.class)
